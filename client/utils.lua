@@ -1,5 +1,16 @@
+local Languages = {
+    ["fr"] = {
+        ["vehicle_washing"] = "Lavage du véhicule ..."
+    },
+    
+    ["en"] = {
+        ["vehicle_washing"] = "Vehicle washing in progress ..."
+    }
+}
+
 Utils = {
     CanWash = true,
+    Lang = "en",
 
     Zones = {
         {
@@ -185,7 +196,7 @@ function Utils:StartCarWash(actualZone)
             
             TaskVehicleDriveToCoord(plyPed, plyVeh, actualZone.endPos, 5.0, 0.0, GetEntityModel(plyVeh), 262144, 1.0, 1000.0)
 
-            self.ShowLoadingPrompt("Lavage du véhicule ...", 1)
+            self.ShowLoadingPrompt(Languages[self.Lang]["vehicle_washing"] or Languages["fr"]["vehicle_washing"], 1)
             self:StartWashParticle(actualZone)
 
             if BusyspinnerIsOn() then 
