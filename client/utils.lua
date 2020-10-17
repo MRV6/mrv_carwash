@@ -10,7 +10,7 @@ local Languages = {
 
 Utils = {
     CanWash = true,
-    Lang = "en",
+    Lang = "fr",
 
     Zones = {
         {
@@ -18,7 +18,7 @@ Utils = {
             heading = 92.158, 
             startPos = vector3(49.190, -1392.024, 28.420), 
             endPos = vector3(-3.804, -1391.698, 28.302),
-            wait = 12, -- seconds,
+            wait = 5, -- (seconds)
 
             particlesStart = {
                 -- Premier rouleau (droite)
@@ -136,7 +136,7 @@ function Utils:StartWashParticle(actualZone)
     local asset = "scr_carwash"
     
     for i = 1, #actualZone.particlesStart do
-        local particle = actualZone.particlesStart[i]
+        local currentParticle = actualZone.particlesStart[i]
 
         RequestNamedPtfxAsset(asset)
         UseParticleFxAssetNextCall(asset)
@@ -145,10 +145,10 @@ function Utils:StartWashParticle(actualZone)
             Wait(100)
         end
         
-        actualZone.particlesStart[i].createdParticle = StartParticleFxLoopedAtCoord(particle.particle, particle.pos, particle.xRot, 0.0, 0.0, 1.0, 0, 0, 0)
+        actualZone.particlesStart[i].createdParticle = StartParticleFxLoopedAtCoord(currentParticle.particle, currentParticle.pos, currentParticle.xRot, 0.0, 0.0, 1.0, 0, 0, 0)
         
-        if (particle.nextWait > 0) then 
-            Wait(particle.nextWait)
+        if (currentParticle.nextWait > 0) then 
+            Wait(currentParticle.nextWait)
         end
     end
 end
@@ -210,14 +210,15 @@ function Utils:StartCarWash(actualZone)
             SetEveryoneIgnorePlayer(plyPed, false)
             SetPlayerControl(plyPed, true)
 
-            self:StopAllParticles(actualZone)
-
             SetCamActive(cam, false)
             RenderScriptCams(false, true, 2000, 0, 0)
 
             self.CanWash = true
             self.DisplayHelp = true
             
+            Wait((actualZone.wait * 1000))
+
+            self:StopAllParticles(actualZone)
             self:StartMainLoop()
         else
             self.ShowNotification(nil, self.Labels["car_broke"])
