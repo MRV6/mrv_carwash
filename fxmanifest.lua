@@ -5,3 +5,5 @@ client_scripts {
     "client/utils.lua",
     "client/client.lua"
 }
+
+dependency 'spawnmanager'
