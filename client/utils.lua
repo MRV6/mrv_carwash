@@ -49,7 +49,7 @@ Utils = {
 
     DisplayHelp = true,
     MaximalBodyHealth = 800.0,
-    CarWashPrice = 15,
+    CarWashPrice = 0,
     CreatedParticles = {}
 }
 
@@ -63,8 +63,9 @@ function Utils:StartMainLoop()
     while true do
         Wait(0)
 
+        local plyPed = PlayerPedId()
+
         for i = 1, #self.Zones do
-            local plyPed = PlayerPedId()
             local plyPos = GetEntityCoords(plyPed)
             local carWashPos = self.Zones[i].startPos
 
